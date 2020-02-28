@@ -1,0 +1,133 @@
+<html>
+
+<head>
+    <title>My experiment</title>
+    <script src="jspsych-6.0.5/jspsych.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-categorize-html.js"></script>
+    <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    <script type="text/javascript" src="vignettes.js"></script>
+</head>
+
+<body></body>
+<script>
+    /* create timeline */
+    var timeline = [];
+    var learned = 0;
+
+    /* define instructions trial */
+    var instructions = {
+        type: "html-keyboard-response",
+        stimulus: "<h2> Instructions</h2>" +
+            "<p>In this study, we'd like you to make judgments about whether something is possible or impossible. To indicate that something " +
+            "is possible, please press the [f] key; to indicate that something is impossible, please press the [j] key. To get you used to this, " +
+            "you will first go through a warm-up phase. On these trials, press [f] if you see the word 'Possible' and [j] if you see the word " +
+            "'Impossible.'' ***Please take your time and answer as correctly as possible.*** </p>" +
+            "<p>Press any key to continue</p>",
+    };
+    timeline.push(instructions);
+
+    var test_stimuli = [{
+        stimulus: "Possible",
+        correct_ans: 70,
+        correct_response: 'F',
+        data: {
+            test_part: 'test',
+            correct_response: 'F'
+        }
+    }, {
+        stimulus: "Impossible",
+        correct_ans: 74,
+        correct_response: 'J',
+        data: {
+            test_part: 'test',
+            correct_response: 'J'
+        }
+    }];
+
+    var immoral = {
+        type: 'categorize-html',
+        stimulus: jsPsych.timelineVariable('stimulus'),
+        key_answer: jsPsych.timelineVariable('correct_ans'),
+        text_answer: jsPsych.timelineVariable('stimulus'),
+        choices: [70, 74],
+        correct_text: "<p class='prompt'>Correct, keep going.</p>",
+        incorrect_text: function() {
+            var html = "<p class='prompt'>That's not right %ANS% is [ " + jsPsych.timelineVariable('correct_response')() + " ] .</p> <p>Please slow down and answer correctly.</p>";
+            return html;
+        },
+        prompt: "<p>Remember: press [f] for possible and [j] for impossible </p>",
+        on_finish: function(data) {
+            if (data.correct) {
+                learned++;
+            }
+        }
+    }
+
+    var test_procedure = {
+        timeline: [immoral],
+        timeline_variables: test_stimuli,
+        randomize_order: true,
+        repetitions: 10,
+    }
+    timeline.push(test_procedure);
+
+    var vignette_instructions = {
+        type: "html-keyboard-response",
+        stimulus: "<h2>In this part, you will read a story and then will be judging whether certain </h2>" +
+            "<h2>events are possible or impossible.</h2>" +
+            "<br>" +
+            "<p>***Please take your time and carefully reflect on these questions. Make sure you do not answer too quickly or carelessly.***</p>" +
+            "<p>Press any key to continue</p>",
+
+    }
+
+    timeline.push(vignette_instructions);
+
+    var vignettes = [{
+        title: "<h2> Please read thefollowing story </h2>",
+        story: "<p>Brad and some friends are hiking through the mountains in the Canadian wilderness. A couple of days into their hike, Brad </p>" +
+            "<p>realizes that they are lost. He knows that a rescue crew could arrive before long, but it is extremely cold and they don't have</p>" +
+            "<p>much food or water left.</p>",
+        instructions: "<h2> Given Brad's situation, please tell us whether it is possible or impossible for </h2>" +
+            "<h2>Brad to do the following things. </h2>" +
+            "<p>press [space] when you are ready to begin. *** Remember to slowly and carefully consider each event!***</p>"
+    }];
+
+    var debrief_block = {
+        type: "html-keyboard-response",
+        stimulus: function() {
+
+            var trials = jsPsych.data.get().filter({
+                test_part: 'test'
+            });
+            var correct_trials = trials.filter({
+                correct: true
+            });
+            var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+            var rt = Math.round(correct_trials.select('rt').mean());
+
+            return "<p>You responded correctly on " + accuracy + "% of the trials.</p>" +
+                "<p>Your average response time was " + rt + "ms.</p>" +
+                "<p>Press any key to complete the experiment. Thank you!</p>";
+
+        }
+    };
+
+    timeline.push(debrief_block);
+
+
+
+
+
+    /* start the experiment */
+    jsPsych.init({
+        timeline: timeline,
+        on_finish: function() {
+            jsPsych.data.displayData();
+        }
+    });
+</script>
+
+</html>
