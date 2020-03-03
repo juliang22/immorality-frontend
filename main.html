@@ -37,6 +37,7 @@
         shuffled_q = jsPsych.randomization.sampleWithoutReplacement(shuffled_q);
     }
 
+    //-------------------------OPENING INSTRUCTIONS-------------------------------
     /* define instructions trial */
     var instructions = {
         type: "html-keyboard-response",
@@ -70,6 +71,8 @@
             'Handedness: <br> <input name="hand" type="radio" required /> Right <input name="hand" type="radio" required/> Left<input name="hand" type="radio" required/>Ambidextrous <br></p>'
     };
     timeline.push(participant_info);
+
+    //-------------------------FAMILIARIZATION TRIAL-------------------------------
 
     //possible choices to categorize/train subject to hit the right keys
     var test_stimuli = [{
@@ -113,7 +116,9 @@
     }
     timeline.push(learning_trial);
 
-    //Actual testing begins here
+    //-------------------------TRIAL BEGINS HERE-------------------------------
+
+    //actual testing begins here
     var vignette_instructions = {
         type: "html-keyboard-response",
         stimulus: "<h2>In this part, you will read a story and then will be judging whether certain events are possible or impossible.</h2> <p>***Please answer as quickly and accurately as you possibly can. You will only have about 1 second to respond to each event.***</p> <p>Press any key to continue</p>",
@@ -137,15 +142,19 @@
         }
     }
 
-    var pause = {
-        type: 'html-keyboard-response',
-        stimulus: "",
-        choices: jsPsych.NO_KEYS,
-        trial_duration: 500,
+    //instructions prior to modal questions
+    var instruct = {
+        type: 'instructions',
+        pages: function() {
+            next_vign();
+            var story = "<h1>Please read the following story</h1> <br>" + q_array[q_i].vignette + "<br><br>" + q_array[q_i].prompt;
+            var instruct = "<h1>Given " + q_array[q_i].name + "'s situation, please tell us whether it is possible or impossible for " + q_array[q_i].name + " to do the following things.</h1> <br>press [next] when you are ready to begin. *** Remember, this will go very quickly!***";
+            return [story, instruct];
+        },
+        show_clickable_nav: true
     }
 
-
-
+    //each individual stimulus for the possible things people can do
     var modalq = {
         // timeline: [choices, pause],
         timeline: [choices],
@@ -161,17 +170,15 @@
         }
     }
 
-    var instruct = {
-        type: 'instructions',
-        pages: function() {
-            next_vign();
-            var story = "<h1>Please read the following story</h1> <br>" + q_array[q_i].vignette + "<br><br>" + q_array[q_i].prompt;
-            var instruct = "<h1>Given " + q_array[q_i].name + "'s situation, please tell us whether it is possible or impossible for " + q_array[q_i].name + " to do the following things.</h1> <br>press [next] when you are ready to begin. *** Remember, this will go very quickly!***";
-            return [story, instruct];
-        },
-        show_clickable_nav: true
+    //short pause between each stimulus
+    var pause = {
+        type: 'html-keyboard-response',
+        stimulus: "",
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 500,
     }
 
+    //adds each prompt/vignette to the timeline
     function timeline_pusher() {
         for (var i = 0; i < VIGNETTE_AMOUNT; i++) {
             timeline.push(instruct);
@@ -180,7 +187,7 @@
     }
     timeline_pusher();
 
-
+    //shows the data collected => make sure to remove before deployment
     var debrief_block = {
         type: "html-keyboard-response",
         stimulus: function() {
