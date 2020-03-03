@@ -20,14 +20,15 @@
     var timeline = [];
 
     //Global variables
-    var q_array = jsPsych.randomization.sampleWithoutReplacement([vignettes.Heinz, vignettes.Brian, vignettes.Josh, vignettes.Mary, vignettes.Liz, vignettes.Brad], 3);
+    VIGNETTE_AMOUNT = 6;
+    var q_array = jsPsych.randomization.sampleWithoutReplacement([vignettes.Heinz, vignettes.Brian, vignettes.Josh, vignettes.Mary, vignettes.Liz, vignettes.Brad], VIGNETTE_AMOUNT);
     var shuffled_modal = jsPsych.randomization.sampleWithoutReplacement(["improbable", "immoral", "irrational"], 1)[0];
     q_i = 0;
     var shuffled_q = [];
 
     //function to move to the next vignette and rest arrays
     function next_vign() {
-        if (q_i == 3) { //or how every many vignettes we are showing
+        if (q_i == VIGNETTE_AMOUNT) { //or how every many vignettes we are showing
             return false;
         }
         q_array[q_i].possible.forEach(element => shuffled_q.push(element));
@@ -143,8 +144,11 @@
         trial_duration: 500,
     }
 
+
+
     var modalq = {
-        timeline: [choices, pause],
+        // timeline: [choices, pause],
+        timeline: [choices],
         loop_function: function(data) {
             if (shuffled_q.length != 1) {
                 shuffled_q.shift();
@@ -167,16 +171,14 @@
         },
         show_clickable_nav: true
     }
-    timeline.push(instruct);
-    timeline.push(modalq);
 
-
-    timeline.push(instruct);
-    timeline.push(modalq);
-
-
-    timeline.push(instruct);
-    timeline.push(modalq);
+    function timeline_pusher() {
+        for (var i = 0; i < VIGNETTE_AMOUNT; i++) {
+            timeline.push(instruct);
+            timeline.push(modalq);
+        }
+    }
+    timeline_pusher();
 
 
     var debrief_block = {
@@ -200,10 +202,6 @@
     };
 
     timeline.push(debrief_block);
-
-
-
-
 
     /* start the experiment */
     jsPsych.init({
