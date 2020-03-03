@@ -42,7 +42,7 @@ vignettes = {
         "irrational": ["go hunting for water buffalo", "eat random berries and leaves", "each venture off independently", "eat all their food immediately"],
         "improbable": ["find thermal vent to keep warm", "find stream showing the path out", "meet a former expedition guide", "find an abandoned bear cave"],
         "possible": ["stay put and wait for help", "follow a river out of the wilderness", "alert rescuers with emergency flares", "find a river for fresh water and fish", "get more food by hunting and fishing", "build a large fire to alert rescuers", "create a shelter to stay warm", "be found by the rescue crew"],
-        "impossible": ["use his mind to keep everyone warm, make new jackets from pine trees, alert airplanes overhead by yelling, grind up rocks for food and water "]
+        "impossible": ["use his mind to keep everyone warm", "make new jackets from pine trees", "alert airplanes overhead by yelling", "grind up rocks for food and water"]
     },
     "Liz": {
         "vignette": "Liz decides to go to the gym on her lunch break because she is going to have to work late tonight and won't have time during the evening. When she gets to the gym, she realizes that her membership has expired since she last went.",
