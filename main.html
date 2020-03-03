@@ -9,6 +9,7 @@
     <script src="jspsych-6.0.5/plugins/jspsych-categorize-html.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-button-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-survey-html-form.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-instructions.js"></script>
     <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
     <script type="text/javascript" src="vignettes.js"></script>
 </head>
@@ -26,6 +27,9 @@
 
     //function to move to the next vignette and rest arrays
     function next_vign() {
+        if (q_i == 3) { //or how every many vignettes we are showing
+            return false;
+        }
         q_array[q_i].possible.forEach(element => shuffled_q.push(element));
         q_array[q_i].impossible.forEach(element => shuffled_q.push(element));
         q_array[q_i][shuffled_modal].forEach(element => shuffled_q.push(element));
@@ -123,6 +127,7 @@
         },
         choices: [70, 74],
         on_finish: function(data) {
+            data.modal_type = shuffled_modal;
             if (data.key_press == 70) {
                 data.answered = "possible";
             } else {
@@ -131,104 +136,47 @@
         }
     }
 
-    story1 = {
-        type: "html-keyboard-response",
-        stimulus: function() {
+    var pause = {
+        type: 'html-keyboard-response',
+        stimulus: "",
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 500,
+    }
+
+    var modalq = {
+        timeline: [choices, pause],
+        loop_function: function(data) {
+            if (shuffled_q.length != 1) {
+                shuffled_q.shift();
+                return true;
+            } else {
+                q_i++;
+                next_vign();
+                return false;
+            }
+        }
+    }
+
+    var instruct = {
+        type: 'instructions',
+        pages: function() {
             next_vign();
-            console.log("hitting");
-            var html = "<h1>Please read the following story</h1> <br>" + q_array[0].vignette + "<br><br>" + q_array[0].prompt;
-            return html;
+            var story = "<h1>Please read the following story</h1> <br>" + q_array[q_i].vignette + "<br><br>" + q_array[q_i].prompt;
+            var instruct = "<h1>Given " + q_array[q_i].name + "'s situation, please tell us whether it is possible or impossible for " + q_array[q_i].name + " to do the following things.</h1> <br>press [next] when you are ready to begin. *** Remember, this will go very quickly!***";
+            return [story, instruct];
         },
+        show_clickable_nav: true
     }
-    timeline.push(story1)
+    timeline.push(instruct);
+    timeline.push(modalq);
 
-    instruct1 = {
-        type: "html-keyboard-response",
-        stimulus: function() {
-            var html = "<h1>Given " + q_array[0].name + "'s situation, please tell us whether it is possible or impossible for " + q_array[0].name + " to do the following things.</h1> <br>press [space] when you are ready to begin. *** Remember, this will go very quickly!***";
-            return html;
-        },
-    }
-    timeline.push(instruct1)
 
-    var modal1 = {
-        timeline: [choices],
-        loop_function: function(data) {
-            if (shuffled_q.length != 1) {
-                shuffled_q.shift();
-                return true;
-            } else {
-                q_i++;
-                next_vign();
-                return false;
-            }
-        }
-    }
-    timeline.push(modal1);
+    timeline.push(instruct);
+    timeline.push(modalq);
 
-    story2 = {
-        type: "html-keyboard-response",
-        stimulus: function() {
-            var html = "<h1>Please read the following story</h1> <br>" + q_array[1].vignette + "<br><br>" + q_array[1].prompt;
-            return html;
-        }
-    }
-    timeline.push(story2);
 
-    instruct2 = {
-        type: "html-keyboard-response",
-        stimulus: function() {
-            var html = "<h1>Given " + q_array[1].name + "'s situation, please tell us whether it is possible or impossible for " + q_array[1].name + " to do the following things.</h1> <br>press [space] when you are ready to begin. *** Remember, this will go very quickly!***";
-            return html;
-        },
-    }
-    timeline.push(instruct2)
-
-    var modal2 = {
-        timeline: [choices],
-        loop_function: function(data) {
-            if (shuffled_q.length != 1) {
-                shuffled_q.shift();
-                return true;
-            } else {
-                q_i++;
-                next_vign();
-                return false;
-            }
-        }
-    }
-    timeline.push(modal2);
-
-    story3 = {
-        type: "html-keyboard-response",
-        stimulus: function() {
-            var html = "<h1>Please read the following story</h1> <br>" + q_array[2].vignette + "<br><br>" + q_array[2].prompt;
-            return html;
-        }
-    }
-    timeline.push(story3);
-
-    instruct3 = {
-        type: "html-keyboard-response",
-        stimulus: function() {
-            var html = "<h1>Given " + q_array[2].name + "'s situation, please tell us whether it is possible or impossible for " + q_array[2].name + " to do the following things.</h1> <br>press [space] when you are ready to begin. *** Remember, this will go very quickly!***";
-            return html;
-        },
-    }
-    timeline.push(instruct3)
-
-    var modal3 = {
-        timeline: [choices],
-        loop_function: function(data) {
-            if (shuffled_q.length != 1) {
-                shuffled_q.shift();
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-    timeline.push(modal3);
+    timeline.push(instruct);
+    timeline.push(modalq);
 
 
     var debrief_block = {
