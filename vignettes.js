@@ -1,5 +1,6 @@
 vignettes = {
     "Heinz": {
+        "name": "Heinz",
         "vignette": "Heinzs wife has recently fallen ill and needs an expensive medication that is not covered by her medical insurance. They do not have the money needed to purchase the expensive prescription medication, but they know that it is vital for her to have it if she is going to recover.",
         "prompt": "Is it possible for Heinz to...?",
         "immoral": ["steal the money from his work", "blackmail someone for the money", "commit credit card fraud", "get the medicine by stealing"],
@@ -9,6 +10,7 @@ vignettes = {
         "impossible": ["be given the money by a turtle", "make the money time traveling", "grow the money on a tree", "get the money by clapping"]
     },
     "Josh": {
+        "name": "Josh",
         "vignette": "Josh is on the way to the airport to catch a flight for a hunting safari in Africa. He leaves with plenty of time to make it there, but his car breaks down on the highway. Now Josh is sitting in his car near a busy intersection, and knows he needs to get to airport soon if he is going to catch his flight.",
         "prompt": "Is it possible for Josh to...?",
         "immoral": ["steal another person's car", "take a taxi without paying", "take another driver hostage", "sneak onto public transportation"],
@@ -18,6 +20,7 @@ vignettes = {
         "impossible": ["get a new car by thinking", "ride a cat to the airport", "teleport himself to the airport", "levitate and fly to the airport"]
     },
     "Brian": {
+        "name": "Brian",
         "vignette": "Brian is the evening manager at a bakery. Near the end of the day, he realizes that $50.75 is missing from the register and that he is responsible for accounting for the money at the end of the day. Brian knows he has to make sure the register is balanced or he might lose his job.",
         "prompt": "Is it possible for Brian to...?",
         "immoral": ["overcharge the next customers", "steal money from a coworker", "lie about how much the bakery sold", "give new customers incorrect change"],
@@ -27,6 +30,7 @@ vignettes = {
         "impossible": ["turn the cash register invisible", "use some monopoly money instead", "take pictures of missing bills", "get the money by sneezing a lot"]
     },
     "Mary": {
+        "name": "Mary",
         "vignette": "Mary is about to go to her final class of the day when she remembers that there is a homework assignment that is due. Mary's mom accidentally took her homework assignment out of her backpack when she was making room for her lunch. Now Mary has nothing to turn in for credit.",
         "prompt": "Is it possible for Mary to...?",
         "immoral": ["quickly copy someone's homework", "put her name on a friend's homework", "forge an excuse note", "lie about being sick to go home"],
@@ -36,6 +40,7 @@ vignettes = {
         "impossible": ["have her homework teleported", "remind herself yesterday evening", "turn in several socks instead", "erase the teacher's memory"]
     },
     "Brad": {
+        "name": "Brad",
         "vignette": "	Brad and some friends are hiking through the mountains in the Canadian wilderness. A couple of days into their hike, Brad realizes that they are lost. He knows that a rescue crew could arrive before long, but it is extremely cold and they don't have much food or water left.",
         "prompt": "Is it possible for Brad to ...?",
         "immoral": ["secretly take his friends' food", "leave the weakest people behind", "rob other hikers they meet", "kill his friend's pet dog for food"],
@@ -45,6 +50,7 @@ vignettes = {
         "impossible": ["use his mind to keep everyone warm", "make new jackets from pine trees", "alert airplanes overhead by yelling", "grind up rocks for food and water"]
     },
     "Liz": {
+        "name": "Liz",
         "vignette": "Liz decides to go to the gym on her lunch break because she is going to have to work late tonight and won't have time during the evening. When she gets to the gym, she realizes that her membership has expired since she last went.",
         "prompt": "Is it possible for Liz to...?",
         "possible": ["wait to go to the gym tomorrow", "go for a run outside instead", "decide to lift weights at home", "eat lunch instead of working out", "	use a friend's guest pass", "pay for a one-day gym pass", "be allowed in just this once", "renew her gym membership"],

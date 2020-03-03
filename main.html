@@ -7,6 +7,8 @@
     <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-categorize-html.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-image-button-response.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-survey-html-form.js"></script>
     <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
     <script type="text/javascript" src="vignettes.js"></script>
 </head>
@@ -41,6 +43,28 @@
             "<p>Press any key to continue</p>",
     };
     timeline.push(instructions);
+
+    /* Consent form for the study*/
+    var consent = {
+        type: 'image-button-response',
+        stimulus: 'img/consent.jpg',
+        choices: ["Continue"],
+        prompt: "<p>Press 'Continue' to agree to the study.</p>",
+        response_ends_trial: true
+    };
+    timeline.push(consent);
+
+    /* Collection of participant info*/
+    var participant_info = {
+        type: 'survey-html-form',
+        preamble: '<p>Participant Information</p>',
+        html: '<p>Participant ID: <br> <input name="id" type="text" required /> <br><br> ' +
+            'Age: <br> <input name="age" type="text" required /> <br><br> ' +
+            'Gender: <br> <input name="gend" type="radio" required /> Male <input name="gend" type="radio" required/> Female <input name="gend" type="radio" required/> Other <br><br>' +
+            'Highest Level of Education: &nbsp <select id="education" name="education" required> <option>Please Select</option><option value="less-than-hs"  >Less Than High School</option> <option value="=hs">High School or Equivalent</option><option value="college">College or Technical School</option><option value="BA">Bachelor Degree</option><option value="MA">Master/Doctorate</option></select> <br><br>' +
+            'Handedness: <br> <input name="hand" type="radio" required /> Right <input name="hand" type="radio" required/> Left<input name="hand" type="radio" required/>Ambidextrous <br></p>'
+    };
+    timeline.push(participant_info);
 
     //possible choices to categorize/train subject to hit the right keys
     var test_stimuli = [{
@@ -87,7 +111,7 @@
     //Actual testing begins here
     var vignette_instructions = {
         type: "html-keyboard-response",
-        stimulus: "<h2>In this part, you will read a story and then will be judging whether certain events are possible or impossible.</h2> <p>***Please take your time and carefully reflect on these questions. Make sure you do not answer too quickly or carelessly.***</p> <p>Press any key to continue</p>",
+        stimulus: "<h2>In this part, you will read a story and then will be judging whether certain events are possible or impossible.</h2> <p>***Please answer as quickly and accurately as you possibly can. You will only have about 1 second to respond to each event.***</p> <p>Press any key to continue</p>",
     }
     timeline.push(vignette_instructions);
 
@@ -112,11 +136,20 @@
         stimulus: function() {
             next_vign();
             console.log("hitting");
-            var html = q_array[0].vignette + "<br><br>" + q_array[0].prompt;
+            var html = "<h1>Please read the following story</h1> <br>" + q_array[0].vignette + "<br><br>" + q_array[0].prompt;
             return html;
         },
     }
     timeline.push(story1)
+
+    instruct1 = {
+        type: "html-keyboard-response",
+        stimulus: function() {
+            var html = "<h1>Given " + q_array[0].name + "'s situation, please tell us whether it is possible or impossible for " + q_array[0].name + " to do the following things.</h1> <br>press [space] when you are ready to begin. *** Remember, this will go very quickly!***";
+            return html;
+        },
+    }
+    timeline.push(instruct1)
 
     var modal1 = {
         timeline: [choices],
@@ -136,11 +169,20 @@
     story2 = {
         type: "html-keyboard-response",
         stimulus: function() {
-            var html = q_array[1].vignette + "<br><br>" + q_array[1].prompt;
+            var html = "<h1>Please read the following story</h1> <br>" + q_array[1].vignette + "<br><br>" + q_array[1].prompt;
             return html;
         }
     }
     timeline.push(story2);
+
+    instruct2 = {
+        type: "html-keyboard-response",
+        stimulus: function() {
+            var html = "<h1>Given " + q_array[1].name + "'s situation, please tell us whether it is possible or impossible for " + q_array[1].name + " to do the following things.</h1> <br>press [space] when you are ready to begin. *** Remember, this will go very quickly!***";
+            return html;
+        },
+    }
+    timeline.push(instruct2)
 
     var modal2 = {
         timeline: [choices],
@@ -160,11 +202,20 @@
     story3 = {
         type: "html-keyboard-response",
         stimulus: function() {
-            var html = q_array[2].vignette + "<br><br>" + q_array[2].prompt;
+            var html = "<h1>Please read the following story</h1> <br>" + q_array[2].vignette + "<br><br>" + q_array[2].prompt;
             return html;
         }
     }
     timeline.push(story3);
+
+    instruct3 = {
+        type: "html-keyboard-response",
+        stimulus: function() {
+            var html = "<h1>Given " + q_array[2].name + "'s situation, please tell us whether it is possible or impossible for " + q_array[2].name + " to do the following things.</h1> <br>press [space] when you are ready to begin. *** Remember, this will go very quickly!***";
+            return html;
+        },
+    }
+    timeline.push(instruct3)
 
     var modal3 = {
         timeline: [choices],
