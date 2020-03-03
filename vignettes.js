@@ -1,220 +1,56 @@
-var Heinz = {
-    "immoral": {
-        13: 'steal the money from his work',
-        14: 'blackmail someone for the money',
-        15: 'commit credit card fraud',
-        16: 'get the medicine by stealing'
+vignettes = {
+    "Heinz": {
+        "vignette": "Heinzs wife has recently fallen ill and needs an expensive medication that is not covered by her medical insurance. They do not have the money needed to purchase the expensive prescription medication, but they know that it is vital for her to have it if she is going to recover.",
+        "prompt": "Is it possible for Heinz to...?",
+        "immoral": ["steal the money from his work", "blackmail someone for the money", "commit credit card fraud", "get the medicine by stealing"],
+        "irrational": ["sell his own medication", "sell all his clothes for money", "go on strike until wages increase", "try random other medicines"],
+        "improbable": ["be given the medicine by a doctor", "inherit money from a close relative", "receive the money from a stranger", "discover a cheap new medicine"],
+        "possible": ["sells some of his stocks or bonds", "use a generic medication instead", "buy a different insurance plan", "enroll in federal healthcare", "borrow the money from a bank", "be given the money by a friend", "loan the money from his family", "sell an extra car for the money"],
+        "impossible": ["be given the money by a turtle", "make the money time traveling", "grow the money on a tree", "get the money by clapping"]
     },
-    "irrational": {
-        21: 'sell his own medication',
-        22: 'sell all his clothes for money',
-        23: 'go on strike until wages increase',
-        24: 'try random other medicines'
+    "Josh": {
+        "vignette": "Josh is on the way to the airport to catch a flight for a hunting safari in Africa. He leaves with plenty of time to make it there, but his car breaks down on the highway. Now Josh is sitting in his car near a busy intersection, and knows he needs to get to airport soon if he is going to catch his flight.",
+        "prompt": "Is it possible for Josh to...?",
+        "immoral": ["steal another person's car", "take a taxi without paying", "take another driver hostage", "sneak onto public transportation"],
+        "irrational": ["book a flight for next year", "sell car for ride to airport", "pay 1000 dollars for a ride", "try to run there in time"],
+        "improbable": ["beckon a friend passing by", "convince airport to delay flight", "get a stranger to drive him", "arrange for a private plane"],
+        "possible": ["reschedule for a later flight", "ask the gas station clerk for help", "take the public bus there", "request aiport shuttle pickup", "ask a relative to pick him up", "hail a taxi at the intersection", "call a friend for a ride", "take public transportation"],
+        "impossible": ["get a new car by thinking", "ride a cat to the airport", "teleport himself to the airport", "levitate and fly to the airport"]
     },
-    "improbable": {
-        17: 'be given the medicine by a doctor',
-        18: 'inherit money from a close relative',
-        19: 'receive the money from a stranger',
-        20: 'discover a cheap new medicine'
+    "Brian": {
+        "vignette": "Brian is the evening manager at a bakery. Near the end of the day, he realizes that $50.75 is missing from the register and that he is responsible for accounting for the money at the end of the day. Brian knows he has to make sure the register is balanced or he might lose his job.",
+        "prompt": "Is it possible for Brian to...?",
+        "immoral": ["overcharge the next customers", "steal money from a coworker", "lie about how much the bakery sold", "give new customers incorrect change"],
+        "irrational": ["close the store five hours early", "pay with his retirement fund", "try to invent new pastries", "discount food to encourage tipping"],
+        "improbable": ["find the money on the ground", "discover the money is in his pocket", "get a child to donate the money", "receive a 100 dollar tip"],
+        "possible": ["explain the situation to his boss", "ask other employees what to do", "get a payday advance loan", "sell something he owns for money", "use money from his own wallet", "add in money from his daily tips", "borrow money from a friend", "write a check for $50.75"],
+        "impossible": ["turn the cash register invisible", "use some monopoly money instead", "take pictures of missing bills", "get the money by sneezing a lot"]
     },
-    "possible": {
-        1: 'sells some of his stocks or bonds',
-        2: 'use a generic medication instead',
-        3: 'buy a different insurance plan',
-        4: 'enroll in federal healthcare',
-        5: 'borrow the money from a bank',
-        6: 'be given the money by a friend',
-        7: 'loan the money from his family',
-        8: 'sell an extra car for the money',
+    "Mary": {
+        "vignette": "Mary is about to go to her final class of the day when she remembers that there is a homework assignment that is due. Mary's mom accidentally took her homework assignment out of her backpack when she was making room for her lunch. Now Mary has nothing to turn in for credit.",
+        "prompt": "Is it possible for Mary to...?",
+        "immoral": ["quickly copy someone's homework", "put her name on a friend's homework", "forge an excuse note", "lie about being sick to go home"],
+        "irrational": ["ask her mom to FedEx the homework", "look under the lunchroom tables", "turn in a completely blank page", "turn in last week's homework again"],
+        "improbable": ["discover her teacher is absent", "learn school is canceled today", "remember she has an extra copy", "be given an A by mistake"],
+        "possible": ["run home to get her homework", "bring in her homework tomorrow", "ask for an extra-credit assignment", "ask her mom what she should do", "explain what happened to her teacher", "quickly redo the homework assignment", "ask her mom to bring the homework", "have her parents call the teacher"],
+        "impossible": ["have her homework teleported", "remind herself yesterday evening", "turn in several socks instead", "erase the teacher's memory"]
     },
-    "impossible": {
-        9: 'be given the money by a turtle',
-        10: 'make the money time traveling',
-        11: 'grow the money on a tree',
-        12: 'get the money by clapping'
-    }
-}
-
-var Josh = {
-    "immoral": {
-        37: "steal another person's car",
-        38: 'take a taxi without paying',
-        39: 'take another driver hostage',
-        40: 'sneak onto public transportation'
+    "Brad": {
+        "vignette": "	Brad and some friends are hiking through the mountains in the Canadian wilderness. A couple of days into their hike, Brad realizes that they are lost. He knows that a rescue crew could arrive before long, but it is extremely cold and they don't have much food or water left.",
+        "prompt": "Is it possible for Brad to ...?",
+        "immoral": ["secretly take his friends' food", "leave the weakest people behind", "rob other hikers they meet", "kill his friend's pet dog for food"],
+        "irrational": ["go hunting for water buffalo", "eat random berries and leaves", "each venture off independently", "eat all their food immediately"],
+        "improbable": ["find thermal vent to keep warm", "find stream showing the path out", "meet a former expedition guide", "find an abandoned bear cave"],
+        "possible": ["stay put and wait for help", "follow a river out of the wilderness", "alert rescuers with emergency flares", "find a river for fresh water and fish", "get more food by hunting and fishing", "build a large fire to alert rescuers", "create a shelter to stay warm", "be found by the rescue crew"],
+        "impossible": ["use his mind to keep everyone warm", "make new jackets from pine trees", "alert airplanes overhead by yelling", "grind up rocks for food and water"]
     },
-    "irrational": {
-        45: 'book a flight for next year',
-        46: 'sell car for ride to airport',
-        47: 'pay 1000 dollars for a ride',
-        48: 'try to run there in time'
-    },
-    "improbable": {
-        41: 'beckon a friend passing by',
-        42: 'convince airport to delay flight',
-        43: 'get a stranger to drive him',
-        44: 'arrange for a private plane'
-    },
-    "possible": {
-        25: 'reschedule for a later flight',
-        26: 'ask the gas station clerk for help	',
-        27: 'take the public bus there',
-        28: 'request aiport shuttle pickup',
-        29: 'ask a relative to pick him up',
-        30: 'hail a taxi at the intersection',
-        31: 'call a friend for a ride',
-        32: 'take public transportation',
-    },
-    "impossible": {
-        33: 'get a new car by thinking',
-        34: 'ride a cat to the airport',
-        35: 'teleport himself to the airport',
-        36: 'levitate and fly to the airport'
-    }
-}
-
-var Brian = {
-    "immoral": {
-        61: 'overcharge the next customers',
-        62: 'steal money from a coworker',
-        63: 'lie about how much the bakery sold',
-        64: 'give new customers incorrect change'
-    },
-    "irrational": {
-        69: 'close the store five hours early',
-        70: 'pay with his retirement fund',
-        71: 'try to invent new pastries',
-        72: 'discount food to encourage tipping'
-    },
-    "improbable": {
-        65: 'find the money on the ground',
-        66: 'discover the money is in his pocket',
-        67: 'get a child to donate the money',
-        68: 'receive a 100 dollar tip'
-    },
-    "possible": {
-        49: 'explain the situation to his boss',
-        50: 'ask other employees what to do',
-        51: 'get a payday advance loan',
-        52: 'sell something he owns for money',
-        53: 'use money from his own wallet',
-        54: 'add in money from his daily tips',
-        55: 'borrow money from a friend',
-        56: 'write a check for $50.75',
-    },
-    "impossible": {
-        57: 'turn the cash register invisible',
-        58: 'use some monopoly money instead',
-        59: 'take pictures of missing bills',
-        60: 'get the money by sneezing a lot'
-    }
-}
-var Josh = {
-    "immoral": {
-        85: "take someone else's gym card",
-        86: 'claim she left her wallet inside',
-        87: 'sneak past the gym attendant',
-        88: 'go in the back door without paying'
-    },
-    "irrational": {
-        93: 'decide to never exercise again',
-        94: 'try again in three minutes',
-        95: 'complain in a foreign language',
-        96: 'run back and forth across lobby'
-    },
-    "improbable": {
-        89: 'learn the gym stopped checking IDs',
-        90: 'receive a free lifetime membership',
-        91: 'find a one-day pass in purse',
-        92: 'discover the gym is free today'
-    },
-    "possible": {
-        73: 'wait to go to the gym tomorrow',
-        74: 'go for a run outside instead',
-        75: 'decide to lift weights at home',
-        76: 'eat lunch instead of working out	',
-        77: "use a friend's guest pass",
-        78: 'pay for a one-day gym pass',
-        79: 'be allowed in just this once',
-        80: 'renew her gym membership',
-    },
-    "impossible": {
-        81: 'turn invisible and go in',
-        82: 'wish all gyms to be free forever',
-        83: 'renew her membership by blinking',
-        84: 'turn her hat into a gym pass'
-    }
-}
-
-var Mary = {
-    "immoral": {
-        109: "quickly copy someone's homework",
-        110: "put her name on a friend's homework",
-        111: 'forge an excuse note',
-        112: 'lie about being sick to go home'
-    },
-    "irrational": {
-        117: 'ask her mom to FedEx the homework',
-        118: 'look under the lunchroom tables',
-        119: 'turn in a completely blank page',
-        120: "turn in last week's homework again"
-    },
-    "improbable": {
-        113: 'discover her teacher is absent',
-        114: 'learn school is canceled today',
-        115: 'remember she has an extra copy',
-        216: 'be given an A by mistake'
-    },
-    "possible": {
-        97: 'run home to get her homework',
-        98: 'bring in her homework tomorrow',
-        99: 'ask for an extra-credit assignmen',
-        100: 'ask her mom what she should do',
-        101: 'explain what happened to her teacher',
-        102: 'quickly redo the homework assignment',
-        103: 'ask her mom to bring the homework',
-        104: 'have her parents call the teacher',
-    },
-    "impossible": {
-        105: 'have her homework teleported',
-        106: 'remind herself yesterday evening',
-        107: 'turn in several socks instead',
-        108: "erase the teacher's memory"
-    }
-}
-
-var Brad = {
-    "immoral": {
-        133: "secretly take his friends' food",
-        134: 'leave the weakest people behind',
-        135: 'rob other hikers they meet',
-        136: "kill his friend's pet dog for food"
-    },
-    "irrational": {
-        141: 'go hunting for water buffalo',
-        142: 'eat random berries and leaves',
-        143: 'each venture off independently',
-        144: 'eat all their food immediately'
-    },
-    "improbable": {
-        137: 'find thermal vent to keep warm',
-        138: 'find stream showing the path out',
-        139: 'meet a former expedition guide',
-        140: 'find an abandoned bear cave'
-    },
-    "possible": {
-        121: 'stay put and wait for help',
-        122: 'follow a river out of the wilderness',
-        123: 'alert rescuers with emergency flares',
-        124: 'find a river for fresh water and fish',
-        125: 'get more food by hunting and fishing',
-        126: 'build a large fire to alert rescuers',
-        127: 'create a shelter to stay warm',
-        128: 'be found by the rescue crew',
-    },
-    "impossible": {
-        129: 'use his mind to keep everyone warm',
-        130: 'make new jackets from pine trees',
-        131: 'alert airplanes overhead by yelling',
-        132: 'grind up rocks for food and water'
+    "Liz": {
+        "vignette": "Liz decides to go to the gym on her lunch break because she is going to have to work late tonight and won't have time during the evening. When she gets to the gym, she realizes that her membership has expired since she last went.",
+        "prompt": "Is it possible for Liz to...?",
+        "possible": ["wait to go to the gym tomorrow", "go for a run outside instead", "decide to lift weights at home", "eat lunch instead of working out", "	use a friend's guest pass", "pay for a one-day gym pass", "be allowed in just this once", "renew her gym membership"],
+        "irrational": ["decide to never exercise again", "	try again in three minutes", "complain in a foreign language", "run back and forth across lobby"],
+        "impossible": ["turn invisible and go in", "wish all gyms to be free forever", "renew her membership by blinking", "turn her hat into a gym pass"],
+        "immoral": ["take someone else's gym card", "claim she left her wallet inside", "sneak past the gym attendant", "go in the back door without paying"],
+        "improbable": ["learn the gym stopped checking IDs", "receive a free lifetime membership", "find a one-day pass in purse", "discover the gym is free today"]
     }
 }

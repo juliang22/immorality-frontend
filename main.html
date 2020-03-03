@@ -2,6 +2,7 @@
 
 <head>
     <title>My experiment</title>
+    <script type="text/javascript" src="vignettes.js"></script>
     <script src="jspsych-6.0.5/jspsych.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
@@ -14,7 +15,20 @@
 <script>
     /* create timeline */
     var timeline = [];
-    var learned = 0;
+
+    //Global variables
+    var q_array = jsPsych.randomization.sampleWithoutReplacement([vignettes.Heinz, vignettes.Brian, vignettes.Josh, vignettes.Mary, vignettes.Liz, vignettes.Brad], 3);
+    var shuffled_modal = jsPsych.randomization.sampleWithoutReplacement(["improbable", "immoral", "irrational"], 1)[0];
+    q_i = 0;
+    var shuffled_q = [];
+
+    //function to move to the next vignette and rest arrays
+    function next_vign() {
+        q_array[q_i].possible.forEach(element => shuffled_q.push(element));
+        q_array[q_i].impossible.forEach(element => shuffled_q.push(element));
+        q_array[q_i][shuffled_modal].forEach(element => shuffled_q.push(element));
+        shuffled_q = jsPsych.randomization.sampleWithoutReplacement(shuffled_q);
+    }
 
     /* define instructions trial */
     var instructions = {
@@ -28,6 +42,7 @@
     };
     timeline.push(instructions);
 
+    //possible choices to categorize/train subject to hit the right keys
     var test_stimuli = [{
         stimulus: "Possible",
         correct_ans: 70,
@@ -46,7 +61,8 @@
         }
     }];
 
-    var immoral = {
+    //training trial to familiarize subject with hitting the right keys
+    var training = {
         type: 'categorize-html',
         stimulus: jsPsych.timelineVariable('stimulus'),
         key_answer: jsPsych.timelineVariable('correct_ans'),
@@ -58,42 +74,120 @@
             return html;
         },
         prompt: "<p>Remember: press [f] for possible and [j] for impossible </p>",
+    }
+
+    var learning_trial = {
+        timeline: [training],
+        timeline_variables: test_stimuli,
+        randomize_order: true,
+        repetitions: 1, //change to 10 after done debugging
+    }
+    timeline.push(learning_trial);
+
+    //Actual testing begins here
+    var vignette_instructions = {
+        type: "html-keyboard-response",
+        stimulus: "<h2>In this part, you will read a story and then will be judging whether certain events are possible or impossible.</h2> <p>***Please take your time and carefully reflect on these questions. Make sure you do not answer too quickly or carelessly.***</p> <p>Press any key to continue</p>",
+    }
+    timeline.push(vignette_instructions);
+
+    //trial that shuffles through al modal options
+    choices = {
+        type: 'html-keyboard-response',
+        stimulus: function() {
+            return shuffled_q[0];
+        },
+        choices: [70, 74],
         on_finish: function(data) {
-            if (data.correct) {
-                learned++;
+            if (data.key_press == 70) {
+                data.answered = "possible";
+            } else {
+                data.answered = "impossible";
             }
         }
     }
 
-    var test_procedure = {
-        timeline: [immoral],
-        timeline_variables: test_stimuli,
-        randomize_order: true,
-        repetitions: 10,
-    }
-    timeline.push(test_procedure);
+    // test_stimuli = [{
+    //     vignette_stim: q_array[q_i].vignette,
+    //     prompt_stim: q_array[q_i].prompt,
+    //     choices_stim: shuffled_q
+    // }];
 
-    var vignette_instructions = {
+    story1 = {
         type: "html-keyboard-response",
-        stimulus: "<h2>In this part, you will read a story and then will be judging whether certain </h2>" +
-            "<h2>events are possible or impossible.</h2>" +
-            "<br>" +
-            "<p>***Please take your time and carefully reflect on these questions. Make sure you do not answer too quickly or carelessly.***</p>" +
-            "<p>Press any key to continue</p>",
-
+        stimulus: function() {
+            next_vign();
+            console.log("hitting");
+            var html = q_array[0].vignette + "<br><br>" + q_array[0].prompt;
+            return html;
+        },
     }
+    timeline.push(story1)
 
-    timeline.push(vignette_instructions);
+    var modal1 = {
+        timeline: [choices],
+        // timeline_variables: test_stimuli,
+        loop_function: function(data) {
+            if (shuffled_q.length != 1) {
+                shuffled_q.shift();
+                return true;
+            } else {
+                q_i++;
+                next_vign();
+                return false;
+            }
+        }
+    }
+    timeline.push(modal1);
 
-    var vignettes = [{
-        title: "<h2> Please read thefollowing story </h2>",
-        story: "<p>Brad and some friends are hiking through the mountains in the Canadian wilderness. A couple of days into their hike, Brad </p>" +
-            "<p>realizes that they are lost. He knows that a rescue crew could arrive before long, but it is extremely cold and they don't have</p>" +
-            "<p>much food or water left.</p>",
-        instructions: "<h2> Given Brad's situation, please tell us whether it is possible or impossible for </h2>" +
-            "<h2>Brad to do the following things. </h2>" +
-            "<p>press [space] when you are ready to begin. *** Remember to slowly and carefully consider each event!***</p>"
-    }];
+    story2 = {
+        type: "html-keyboard-response",
+        stimulus: function() {
+            var html = q_array[1].vignette + "<br><br>" + q_array[1].prompt;
+            return html;
+        }
+    }
+    timeline.push(story2);
+
+    var modal2 = {
+        timeline: [choices],
+        // timeline_variables: test_stimuli,
+        loop_function: function(data) {
+            if (shuffled_q.length != 1) {
+                shuffled_q.shift();
+                return true;
+            } else {
+                q_i++;
+                next_vign();
+                return false;
+            }
+        }
+    }
+    timeline.push(modal2);
+
+    story3 = {
+        type: "html-keyboard-response",
+        stimulus: function() {
+            var html = q_array[2].vignette + "<br><br>" + q_array[2].prompt;
+            return html;
+        }
+    }
+    timeline.push(story3);
+
+    var modal3 = {
+        timeline: [choices],
+        // timeline_variables: test_stimuli,
+        loop_function: function(data) {
+            if (shuffled_q.length != 1) {
+                shuffled_q.shift();
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    timeline.push(modal3);
+
 
     var debrief_block = {
         type: "html-keyboard-response",
