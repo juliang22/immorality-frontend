@@ -91,7 +91,7 @@
     }
     timeline.push(vignette_instructions);
 
-    //trial that shuffles through al modal options
+    //trial that shuffles through all modal options
     choices = {
         type: 'html-keyboard-response',
         stimulus: function() {
@@ -107,12 +107,6 @@
         }
     }
 
-    // test_stimuli = [{
-    //     vignette_stim: q_array[q_i].vignette,
-    //     prompt_stim: q_array[q_i].prompt,
-    //     choices_stim: shuffled_q
-    // }];
-
     story1 = {
         type: "html-keyboard-response",
         stimulus: function() {
@@ -126,7 +120,6 @@
 
     var modal1 = {
         timeline: [choices],
-        // timeline_variables: test_stimuli,
         loop_function: function(data) {
             if (shuffled_q.length != 1) {
                 shuffled_q.shift();
@@ -151,7 +144,6 @@
 
     var modal2 = {
         timeline: [choices],
-        // timeline_variables: test_stimuli,
         loop_function: function(data) {
             if (shuffled_q.length != 1) {
                 shuffled_q.shift();
@@ -176,7 +168,6 @@
 
     var modal3 = {
         timeline: [choices],
-        // timeline_variables: test_stimuli,
         loop_function: function(data) {
             if (shuffled_q.length != 1) {
                 shuffled_q.shift();
