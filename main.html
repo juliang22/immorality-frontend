@@ -1,8 +1,9 @@
 <html>
 
 <head>
-    <title>My experiment</title>
+    <title>Modality Study</title>
     <script type="text/javascript" src="vignettes.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="jspsych-6.0.5/jspsych.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-image-keyboard-response.js"></script>
@@ -10,7 +11,9 @@
     <script src="jspsych-6.0.5/plugins/jspsych-image-button-response.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-survey-html-form.js"></script>
     <script src="jspsych-6.0.5/plugins/jspsych-instructions.js"></script>
+    <script src="jspsych-6.0.5/plugins/jspsych-survey-multi-select-modified.js"></script>
     <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    <link rel="stylesheet" href="css/style.css">
     <script type="text/javascript" src="vignettes.js"></script>
 </head>
 
@@ -25,6 +28,7 @@
     var shuffled_modal = jsPsych.randomization.sampleWithoutReplacement(["improbable", "immoral", "irrational"], 1)[0];
     q_i = 0;
     var shuffled_q = [];
+    var page_1_options = ["Strongly Disagree", "Disagree", "Somewhat Disagree", "Neutral", "Somewhat Agree", "Agree", "Strongly Agree"];
 
     //function to move to the next vignette and rest arrays
     function next_vign() {
@@ -38,17 +42,6 @@
     }
 
     //-------------------------OPENING INSTRUCTIONS-------------------------------
-    /* define instructions trial */
-    var instructions = {
-        type: "html-keyboard-response",
-        stimulus: "<h2> Instructions</h2>" +
-            "<p>In this study, we'd like you to make judgments about whether something is possible or impossible. To indicate that something " +
-            "is possible, please press the [f] key; to indicate that something is impossible, please press the [j] key. To get you used to this, " +
-            "you will first go through a warm-up phase. On these trials, press [f] if you see the word 'Possible' and [j] if you see the word " +
-            "'Impossible.'' ***Please take your time and answer as correctly as possible.*** </p>" +
-            "<p>Press any key to continue</p>",
-    };
-    timeline.push(instructions);
 
     /* Consent form for the study*/
     var consent = {
@@ -60,17 +53,29 @@
     };
     timeline.push(consent);
 
-    /* Collection of participant info*/
+    /* Collection of participant info ??"highest degree of education needs to be required but it isnt letting me...??*/
     var participant_info = {
         type: 'survey-html-form',
         preamble: '<p>Participant Information</p>',
-        html: '<p>Participant ID: <br> <input name="id" type="text" required /> <br><br> ' +
-            'Age: <br> <input name="age" type="text" required /> <br><br> ' +
+        html: '<p>Participant ID: <br> <input name="id" type="number" required /> <br><br> ' +
+            'Age: <br> <input name="age" type="number" required /> <br><br> ' +
             'Gender: <br> <input name="gend" type="radio" required /> Male <input name="gend" type="radio" required/> Female <input name="gend" type="radio" required/> Other <br><br>' +
-            'Highest Level of Education: &nbsp <select id="education" name="education" required> <option>Please Select</option><option value="less-than-hs"  >Less Than High School</option> <option value="=hs">High School or Equivalent</option><option value="college">College or Technical School</option><option value="BA">Bachelor Degree</option><option value="MA">Master/Doctorate</option></select> <br><br>' +
+            'Highest Level of Education: &nbsp <select id="education" name="education" required> <option value="">Please Select</option><option value="less-than-hs">Less Than High School</option> <option value="=hs">High School or Equivalent</option><option value="college">College or Technical School</option><option value="BA">Bachelor Degree</option><option value="MA">Master/Doctorate</option></select> <br><br>' +
             'Handedness: <br> <input name="hand" type="radio" required /> Right <input name="hand" type="radio" required/> Left<input name="hand" type="radio" required/>Ambidextrous <br></p>'
     };
     timeline.push(participant_info);
+
+    /* define instructions trial */
+    var instructions = {
+        type: "html-keyboard-response",
+        stimulus: "<h2> Instructions</h2>" +
+            "<p>In this study, we'd like you to make judgments about whether something is possible or impossible. To indicate that something " +
+            "is possible, please press the [f] key; to indicate that something is impossible, please press the [j] key. To get you used to this, " +
+            "you will first go through a warm-up phase. On these trials, press [f] if you see the word 'Possible' and [j] if you see the word " +
+            "'Impossible.'' ***Please take your time and answer as correctly as possible.*** </p>" +
+            "<p>Press any key to continue</p>",
+    };
+    timeline.push(instructions);
 
     //-------------------------FAMILIARIZATION TRIAL-------------------------------
 
@@ -128,6 +133,7 @@
     //trial that shuffles through all modal options
     choices = {
         type: 'html-keyboard-response',
+        trial_duration: 1150,
         stimulus: function() {
             return shuffled_q[0];
         },
@@ -154,10 +160,17 @@
         show_clickable_nav: true
     }
 
+    //short pause between each stimulus
+    var pause = {
+        type: 'html-keyboard-response',
+        stimulus: "",
+        choices: jsPsych.NO_KEYS,
+        trial_duration: 500,
+    }
+
     //each individual stimulus for the possible things people can do
     var modalq = {
-        // timeline: [choices, pause],
-        timeline: [choices],
+        timeline: [choices, pause],
         loop_function: function(data) {
             if (shuffled_q.length != 1) {
                 shuffled_q.shift();
@@ -170,14 +183,6 @@
         }
     }
 
-    //short pause between each stimulus
-    var pause = {
-        type: 'html-keyboard-response',
-        stimulus: "",
-        choices: jsPsych.NO_KEYS,
-        trial_duration: 500,
-    }
-
     //adds each prompt/vignette to the timeline
     function timeline_pusher() {
         for (var i = 0; i < VIGNETTE_AMOUNT; i++) {
@@ -186,6 +191,121 @@
         }
     }
     timeline_pusher();
+
+    var psychopathy = {
+        type: 'survey-multi-select-modified',
+        preamble: "<br><br>Answer the questions below to the best of your ability.",
+        questions: [{
+            prompt: "I deserve special treatment.",
+            name: '1',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "I care a lot about my relationships with others (reversed).",
+            name: '2',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "Feeling sorry for others is a sign of weakness.",
+            name: '3',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "When someone does something nice for me, I wonder what they want from me.",
+            name: '4',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "People would say I am a reliable and dependable person (reversed).",
+            name: '5',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "I quit things pretty easily.",
+            name: '6',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "I could make a living as a con artist.",
+            name: '7',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "I have more important things to worry about than other people's feelings.",
+            name: '8',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "My temper has gotten me into trouble.",
+            name: '9',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "I am known as a bit of a rebel.",
+            name: '10',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "“Act first, think later” describes me well.",
+            name: '11',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "I like doing things that are risky or dangerous.",
+            name: '12',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "When I am upset, I will do things I later regret.",
+            name: '13',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "I am a bit of a worrier (reversed).",
+            name: '14',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "I am not the type to get depressed about the things I’ve done wrong.",
+            name: '15',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "I remain cool, calm, and collected when things get stressful.",
+            name: '16',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "I often emerge as the leader in a group.",
+            name: '17',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, {
+            prompt: "I am pretty comfortable when meeting new people.",
+            name: '18',
+            options: page_1_options,
+            required: true,
+            horizontal: true
+        }, ]
+    }
+    timeline.push(psychopathy);
 
     //shows the data collected => make sure to remove before deployment
     var debrief_block = {
@@ -207,7 +327,6 @@
 
         }
     };
-
     timeline.push(debrief_block);
 
     /* start the experiment */
